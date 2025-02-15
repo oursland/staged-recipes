@@ -1,0 +1,76 @@
+{% set name = "godot" %}
+{% set version = "4.3-stable" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/godotengine/godot/releases/download/{{ version }}/godot-{{ version }}.tar.xz
+  sha256: 751e55bfad8e04b846f9cf7b6eb80e058986a2cb1b103fc0fe6a4d8526a20e56
+
+build:
+  # Uncomment the following line if the package is pure Python and the recipe is exactly the same for all platforms.
+  # It is okay if the dependencies are not built for all platforms/versions, although selectors are still not allowed.
+  # See https://conda-forge.org/docs/maintainer/knowledge_base.html#noarch-python for more details.
+  # noarch: python
+  # If the installation is complex, or different between Unix and Windows, use separate bld.bat and build.sh files instead of this key.
+  # By default, the package will be built for the Python versions supported by conda-forge and for all major OSs.
+  # Add the line "skip: True  # [py<35]" (for example) to limit to Python 3.5 and newer, or "skip: True  # [not win]" to limit to Windows.
+  # More info about selectors can be found in the conda-build docs: 
+  # https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html#preprocessing-selectors
+  script: scons
+  number: 0
+
+requirements:
+  build:
+    # If your project compiles code (such as a C extension) then add the required compilers as separate entries here.
+    # Compilers are named 'c', 'cxx', 'fortran', among others
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    # this is necessary for all compiled recipes
+    - {{ stdlib('c') }}
+  host:
+    - python
+    - scons
+    - libvulkan-headers
+    - libvulkan-loader
+  # run:
+  #   - python
+
+# test:
+#   # Some packages might need a `test/commands` key to check CLI.
+#   # List all the packages/modules that `run_test.py` imports.
+#   imports:
+#     - simplejson
+#     - simplejson.tests
+#   # For python packages, it is useful to run pip check. However, sometimes the
+#   # metadata used by pip is out of date. Thus this section is optional if it is
+#   # failing.
+#   requires:
+#     - pip
+#   commands:
+#     - pip check
+
+about:
+  home: https://godotengine.org/
+  summary: 'Godot Engine - Multi-platform 2D and 3D game engine'
+  description: |
+    Godot Engine is a feature-packed, cross-platform game engine
+    to create 2D and 3D games from a unified interface. It provides
+    a comprehensive set of common tools, so that users can focus on
+    making games without having to reinvent the wheel. Games can be
+    exported with one click to a number of platforms, including the
+    major desktop platforms (Linux, macOS, Windows), mobile platforms
+    (Android, iOS), as well as Web-based platforms and consoles.
+
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE.txt
+  # The doc_url and dev_url are optional.
+  doc_url: https://docs.godotengine.org/en/stable/
+  dev_url: https://github.com/godotengine/godot
+
+extra:
+  recipe-maintainers:
+    - oursland
